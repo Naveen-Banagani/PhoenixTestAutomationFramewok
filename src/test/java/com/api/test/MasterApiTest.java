@@ -47,7 +47,7 @@ public class MasterApiTest {
 	}
 	
 	@Test
-	public void countApiTest_MissingAuth() throws IOException {
+	public void MasterApiTest_MissingAuth() throws IOException {
 		given()
 		.baseUri(getProperty("BASE_URI"))
 		.contentType(ContentType.JSON)
