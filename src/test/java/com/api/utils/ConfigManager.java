@@ -10,7 +10,7 @@ public class ConfigManager {
 	private static String path ="config/config.properties";
 	private static String env;
 	private ConfigManager() {
-		//private constructor-->we cannot create any class object of ConfigManager class
+		//private constructor-->we cannot create any  object of ConfigManager class outside this class
 	}
 	//Static block it will be executed during class loading time
 	static {//Operation of loading properties file in memory
@@ -23,7 +23,7 @@ public class ConfigManager {
 		case "uat" -> path = "config/config.uat.properties";
 		default -> path = "config/config.qa.properties";
 		}
-		InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+		InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream(path); //this line helps us to read the file in our src/test/resources folder
 		if(input==null)
 			throw new RuntimeException("Cannot find the file at path "+path);
 		try {
