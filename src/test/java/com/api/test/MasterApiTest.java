@@ -7,6 +7,8 @@ import java.io.IOException;
 import static org.hamcrest.Matchers.*;
 import org.testng.annotations.Test;
 
+import com.api.utils.SpecUtils;
+
 import static com.api.constants.Role.*;
 import static com.api.utils.AuthTokenProvider.*;
 import static com.api.utils.ConfigManager.*;
@@ -18,21 +20,14 @@ import io.restassured.module.jsv.JsonSchemaValidator;
 public class MasterApiTest {
 	@Test
 	public void masterApiTest() throws IOException {
-		Header authHeader = new Header("Authorization",getToken(FD));
+
 		given()
-		.baseUri(getProperty("BASE_URI"))
-		.contentType(ContentType.JSON)
-		.header(authHeader)
-		.log().uri()
-		.log().method()
-		.log().headers()
+		.spec(SpecUtils.requestSpecWithAuth(FD))
 		.when()
 		.post("master")
 		.then()
-		.log().all()
-		.statusCode(200)
+		.spec(SpecUtils.responseSpec())
 		.body("message", equalTo("Success")) //this is Matchers method i am not writing Matchers because I used static imports
-		.time(lessThan(5000L))
 		.body("data", notNullValue())
 		.body("data",hasKey("mst_oem"))
 		.body("data",hasKey("mst_model"))
@@ -49,16 +44,11 @@ public class MasterApiTest {
 	@Test
 	public void MasterApiTest_MissingAuth() throws IOException {
 		given()
-		.baseUri(getProperty("BASE_URI"))
-		.contentType(ContentType.JSON)
-		.log().uri()
-		.log().method()
-		.log().headers()
+		.spec(SpecUtils.requestSpec())
 		.when()
 		.post("master")
 		.then()
-		.log().all()
-		.statusCode(401);
+		.spec(SpecUtils.responseSpec_TEXT(401));
 	}
 
 }
