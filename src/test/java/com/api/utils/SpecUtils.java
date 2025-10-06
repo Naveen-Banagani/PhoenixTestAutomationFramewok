@@ -44,6 +44,20 @@ public class SpecUtils {
 		return request;
 	}
 	
+	public static RequestSpecification requestSpecWithAuth(Role role, Object payload) throws IOException {
+		RequestSpecification request = new RequestSpecBuilder()
+											.setBaseUri(getProperty("BASE_URI"))//calling getproperty() using class name because method is static and we are not using className because of static import
+											.setContentType(ContentType.JSON)
+											.setAccept(ContentType.JSON)
+											.addHeader("Authorization", AuthTokenProvider.getToken(role))
+											.setBody(payload)
+											.log(LogDetail.URI)
+											.log(LogDetail.METHOD)
+											.log(LogDetail.HEADERS)
+											.log(LogDetail.BODY)
+											.build();
+		return request;
+	}
 	
 
 	public static RequestSpecification requestSpec(Object payload) throws IOException {
