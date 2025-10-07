@@ -13,6 +13,7 @@ import com.api.request.model.Customer;
 import com.api.request.model.CustomerAddress;
 import com.api.request.model.CustomerProduct;
 import com.api.request.model.Problems;
+import com.api.utils.DateTimeUtil;
 import com.api.utils.SpecUtils;
 
 import io.restassured.RestAssured;
@@ -24,7 +25,7 @@ public class CreateJobAPITest {
 		//Creating the CreateJobPayload object
 		Customer customer = new Customer("Nav", "Ban", "1231231231", "", "navban@gmail.com", "");
 		CustomerAddress customer_address = new CustomerAddress("2", "myHouse", "myStreet", "nearHouse", "myArea", "517500", "India", "AndhraPradesh");
-		CustomerProduct customer_product = new CustomerProduct("2025-08-31T23:00:00.000Z", "77415282927499", "77415282927499", "77415282927499", "2025-08-31T23:00:00.000Z", 1, 1);
+		CustomerProduct customer_product = new CustomerProduct(DateTimeUtil.getTimeWithDaysAgo(10), "87415282927499", "87415282927499", "87415282927499", DateTimeUtil.getTimeWithDaysAgo(10), 1, 1);
 		Problems problems = new Problems(1, "Battery Issue");
 		List<Problems> problemsList = new ArrayList<Problems>();
 		problemsList.add(problems);
