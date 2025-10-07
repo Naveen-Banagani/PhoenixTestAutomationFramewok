@@ -1,49 +1,51 @@
 package com.api.test;
 
-import static io.restassured.RestAssured.*;
+import static com.api.constants.Role.FD;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.blankOrNullString;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
 
 import java.io.IOException;
 
-import static org.hamcrest.Matchers.*;
 import org.testng.annotations.Test;
 
-import com.api.utils.SpecUtils;
+import static com.api.utils.SpecUtils.*;
 
-import static com.api.constants.Role.*;
-import static com.api.utils.AuthTokenProvider.*;
-import static com.api.utils.ConfigManager.*;
-
-import io.restassured.http.ContentType;
-import io.restassured.http.Header;
-import io.restassured.module.jsv.JsonSchemaValidator;
+import static io.restassured.module.jsv.JsonSchemaValidator.*;
 
 public class CountApiTest {
-	@Test
+	@Test(description= "Verifying if count API is giving correct response", groups = {"api","regression","smoke"})
+
 	public void countApiTest() throws IOException {
 		given()
-        .spec(SpecUtils.requestSpecWithAuth(FD))
+        .spec(requestSpecWithAuth(FD))
 		.when()
 		.get("dashboard/count")
 		.then()
-		.spec(SpecUtils.responseSpec())
+		.spec(responseSpec())
 		.body("message", equalTo("Success")) //this is Matchers method i am not writing Matchers because I used static imports
 		.body("data", notNullValue())
 		.body("data.size()", equalTo(3))
 		.body("data.count", everyItem(greaterThanOrEqualTo(0)))
 		.body("data.label", everyItem(not(blankOrNullString())))
 		.body("data.key",containsInAnyOrder("pending_fst_assignment","pending_for_delivery","created_today"))
-		.body(JsonSchemaValidator.matchesJsonSchemaInClasspath("response-schema/countResponseSchema.json"));
+		.body(matchesJsonSchemaInClasspath("response-schema/countResponseSchema.json"));
 
 	}
 	
-	@Test
+	@Test(description= "Verifying if count API is giving correct status code for invalid token", groups = {"api","regression","smoke", "negative"})
 	public void countApiTest_MissingAuth() throws IOException {
 		given()
-		.spec(SpecUtils.requestSpec())
+		.spec(requestSpec())
 		.when()
 		.get("dashboard/count")
 		.then()
-		.spec(SpecUtils.responseSpec_TEXT(401));
+		.spec(responseSpec_TEXT(401));
 	}
 
 }

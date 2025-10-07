@@ -4,25 +4,32 @@ import static org.hamcrest.Matchers.equalTo;
 
 import java.io.IOException;
 
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.api.pojo.UserCredentials;
-import com.api.utils.SpecUtils;
+import com.api.request.model.UserCredentials;
+import static com.api.utils.SpecUtils.*;
 
-import io.restassured.module.jsv.JsonSchemaValidator;
+import static io.restassured.module.jsv.JsonSchemaValidator.*;
 
 public class LoginApiTest {
-	@Test
+	
+	private UserCredentials userCredentials;
+	@BeforeMethod(description = "Create the Payload for the login API")
+	public void setUp() {
+		userCredentials = new UserCredentials("iamfd","password");
+	}
+	
+	@Test(description= "Verifying if login API is working for Iamfd", groups = {"api","regression","smoke"})
 	public void loginApiTest() throws IOException {
-			UserCredentials userCredentials = new UserCredentials("iamfd","password");
 			given()
-				.spec(SpecUtils.requestSpec(userCredentials))
+				.spec(requestSpec(userCredentials))
 			.when()
 				.post("login")
 			.then()
-				.spec(SpecUtils.responseSpec())
+				.spec(responseSpec())
 				.body("message", equalTo("Success"))
-			    .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("response-schema/loginResponseSchema.json"));
+			    .body(matchesJsonSchemaInClasspath("response-schema/loginResponseSchema.json"));
 			
 	}
 
