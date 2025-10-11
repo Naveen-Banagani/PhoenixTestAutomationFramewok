@@ -43,7 +43,7 @@ public class CreateJobAPITest {
 	}
 	
 	@Test
-	public void createJobApiTest() throws IOException {
+	public void createJobApiTest() {
 		//Creating the CreateJobPayload object
 				RestAssured.given()
 					  .spec(requestSpecWithAuth(Role.FD, createJobPayload))

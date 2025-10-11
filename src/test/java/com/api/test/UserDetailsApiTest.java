@@ -14,7 +14,7 @@ import static io.restassured.module.jsv.JsonSchemaValidator.*;
 
 public class UserDetailsApiTest {
 	@Test(description = "Verify if the user details API response is shown correctly", groups= {"api","regression","smoke"})
-	public void userDetailsAPITest() throws IOException {
+	public void userDetailsAPITest() {
 
 		given()
 			.spec(requestSpecWithAuth(FD))

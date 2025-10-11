@@ -17,7 +17,7 @@ import io.restassured.specification.ResponseSpecification;
 import static com.api.utils.ConfigManager.*;
 
 public class SpecUtils {
-	public static RequestSpecification requestSpec() throws IOException {
+	public static RequestSpecification requestSpec() {
 		RequestSpecification request = new RequestSpecBuilder()
 											.setBaseUri(getProperty("BASE_URI"))//calling getproperty() using class name because method is static and we are not using className because of static import
 											.setContentType(ContentType.JSON)
@@ -30,7 +30,7 @@ public class SpecUtils {
 		return request;
 	}
 	
-	public static RequestSpecification requestSpecWithAuth(Role role) throws IOException {
+	public static RequestSpecification requestSpecWithAuth(Role role) {
 		RequestSpecification request = new RequestSpecBuilder()
 											.setBaseUri(getProperty("BASE_URI"))//calling getproperty() using class name because method is static and we are not using className because of static import
 											.setContentType(ContentType.JSON)
@@ -44,7 +44,7 @@ public class SpecUtils {
 		return request;
 	}
 	
-	public static RequestSpecification requestSpecWithAuth(Role role, Object payload) throws IOException {
+	public static RequestSpecification requestSpecWithAuth(Role role, Object payload) {
 		RequestSpecification request = new RequestSpecBuilder()
 											.setBaseUri(getProperty("BASE_URI"))//calling getproperty() using class name because method is static and we are not using className because of static import
 											.setContentType(ContentType.JSON)
@@ -60,7 +60,7 @@ public class SpecUtils {
 	}
 	
 
-	public static RequestSpecification requestSpec(Object payload) throws IOException {
+	public static RequestSpecification requestSpec(Object payload){
 		RequestSpecification request = new RequestSpecBuilder()
 				.setBaseUri(getProperty("BASE_URI"))//calling getproperty() using class name because method is static and we are not using className because of static import
 				.setContentType(ContentType.JSON)

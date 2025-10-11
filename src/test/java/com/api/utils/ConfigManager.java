@@ -37,7 +37,7 @@ public class ConfigManager {
 			e.printStackTrace();
 		}
 	}
-	public static String getProperty(String Key) throws IOException {
+	public static String getProperty(String Key) {
 		return prop.getProperty(Key);
 	}
 
