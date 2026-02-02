@@ -1,4 +1,4 @@
-package com.api.test;
+package com.api.test.datadriven;
 
 import static com.api.utils.SpecUtils.requestSpecWithAuth;
 import static com.api.utils.SpecUtils.responseSpec;
@@ -25,26 +25,16 @@ import com.api.request.model.CustomerAddress;
 import com.api.request.model.CustomerProduct;
 import com.api.request.model.Problems;
 import com.api.utils.DateTimeUtil;
+import com.dataproviders.api.bean.CreateJobBean;
 
 import io.restassured.RestAssured;
 
-public class CreateJobAPITest {
-	private CreateJobPayload createJobPayload;
-	@BeforeMethod(description = "Creating Job api request payload")
-	public void setUp() {
-		Customer customer = new Customer("Nav", "Ban", "1231231231", "", "navban@gmail.com", "");
-		CustomerAddress customer_address = new CustomerAddress("2", "myHouse", "myStreet", "nearHouse", "myArea", "517500", "India", "AndhraPradesh");
-		CustomerProduct customer_product = new CustomerProduct(DateTimeUtil.getTimeWithDaysAgo(10), "97415282927499", "97415282927499", "97415282927499", DateTimeUtil.getTimeWithDaysAgo(10), Product.NEXUS_2.getCode(), Model.NEXUS_2_BLUE.getCode() );
-		Problems problems = new Problems(Problem.SMARTPHONE_IS_RUNNING_SLOW.getCode(), "Battery Issue");
-		List<Problems> problemsList = new ArrayList<Problems>();
-		problemsList.add(problems);
-		
-		createJobPayload = new CreateJobPayload(ServiceLocation.SERVICE_LOCATION_A.getCode(), Platform.FRONT_DESK.getCode(), Warranty_Status.IN_WARRANTY.getCode(), OEM.GOOGLE.getCode(), customer, customer_address, customer_product, problemsList);
-
-	}
+public class CreateJobAPIDataDrivenTest {
 	
-	@Test
-	public void createJobApiTest() {
+	@Test(description= "Verifying if CreateJob API is working", groups = {"api","regression","datadriven"},
+			dataProviderClass = com.dataproviders.DataProviderUtils.class,
+			dataProvider = "CreateJobAPIDataProvider")
+	public void createJobApiTest(CreateJobPayload createJobPayload) {
 		//Creating the CreateJobPayload object
 				RestAssured.given()
 					  .spec(requestSpecWithAuth(Role.FD, createJobPayload))
@@ -56,6 +46,8 @@ public class CreateJobAPITest {
 					  .body("message", Matchers.equalTo("Job created successfully. "))
 					  .body("data.mst_service_location_id", Matchers.equalTo(1))
 					  .body("data.job_number",Matchers.startsWith("JOB_"));
+				
+				System.out.println(createJobPayload.mst_platform_id());
 
 	}
 

@@ -15,7 +15,7 @@ public class AuthTokenProvider {
 		// private constructor
 	}
 
-	public static String getToken(Role role) throws IOException {
+	public static String getToken(Role role) {
 		UserCredentials userCredentials = null;
 		if (role == FD) {
 			userCredentials = new UserCredentials("iamfd", "password");

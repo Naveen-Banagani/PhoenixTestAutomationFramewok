@@ -18,7 +18,7 @@ import static io.restassured.module.jsv.JsonSchemaValidator.*;
 
 public class MasterApiTest {
 	@Test(description= "Verifying if Master API is giving correct response", groups = {"api","regression","smoke"})
-	public void masterApiTest() throws IOException {
+	public void masterApiTest() {
 
 		given()
 		.spec(requestSpecWithAuth(FD))
@@ -41,7 +41,7 @@ public class MasterApiTest {
 	}
 	
 	@Test(description= "Verifying if master API is giving correct status code for invalid token", groups = {"api","regression","smoke", "negative"})
-	public void MasterApiTest_MissingAuth() throws IOException {
+	public void MasterApiTest_MissingAuth(){
 		given()
 		.spec(requestSpec())
 		.when()
